@@ -1,5 +1,5 @@
 from inputkit import Key, handleInput
-from typing import Iterable, overload, Any, Iterator, TextIO
+from typing import Iterable, overload, Any, TextIO
 from pathlib import Path
 from io import StringIO
 import sys
@@ -89,7 +89,7 @@ def maxHistory(value: int | None = None) -> int | None:
 def loadHistory(file: str | Path | TextIO) -> None:
     if isinstance(file, Path):
         if not file.is_file():
-            raise ValueError("Path object must be a file")
+            raise ValueError("Path object must be a file.")
 
     if isinstance(file, str | Path):
         with (open(file, "r", encoding='utf8') if isinstance(file, str) else file.open("r", encoding='utf8')) as fileObj:
@@ -104,6 +104,17 @@ def loadHistory(file: str | Path | TextIO) -> None:
         file.seek(0)
         _HIST.extend(file.read().splitlines())
         file.seek(cursor)
+
+def saveHistory(filepath: str | Path) -> None:
+    if isinstance(filepath, Path):
+        if filepath.is_dir():
+            raise ValueError("Path must be able to be a file.")
+
+    if not (pathObj := (Path().joinpath(filepath) if isinstance(filepath, str) else filepath)).exists():
+        pathObj.touch()
+
+    with pathObj.open("w") as file:
+        file.write("\n".join(_HIST))
 
 def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> str:
     sys.stdout.write(prompt)
@@ -236,3 +247,4 @@ if __name__ == "__main__":
 
     while True:
         input(": ", voidCtrlC=False)
+        saveHistory(".hist")
