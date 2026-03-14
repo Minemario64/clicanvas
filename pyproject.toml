@@ -1,0 +1,14 @@
+[project]
+name = "clicanvas"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "inputkit",
+    "tester",
+]
+
+[tool.uv.sources]
+tester = { git = "https://github.com/Minemario64/Testing-Suite.git" }
+inputkit = { path = "../inputkit" }
