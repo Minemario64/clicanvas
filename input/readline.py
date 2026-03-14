@@ -4,7 +4,7 @@ from pathlib import Path
 from io import StringIO
 import sys
 
-VERSION = "1.0.0"
+version = "1.0.0"
 
 class maxList(list):
     @overload
