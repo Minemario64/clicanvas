@@ -9,8 +9,12 @@ description = "A python library that deals with terminal-based user input. From 
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "inputkit",
-    "tester",
+    "inputkit @ git+https://github.com/Minemario64/inputkit.git",
+]
+
+[project.optional-dependencies]
+dev = [
+    "tester @ git+https://github.com/Minemario64/Testing-Suite.git"
 ]
 
 [tool.uv.sources]
