@@ -5,6 +5,8 @@ import sys
 
 VERSION = "1.0.0"
 
+_ANSI_START = "\x1b["
+
 def input(prompt: str = "Password: ", voidCtrlC: bool = True) -> str:
     sys.stdout.write(prompt)
     sys.stdout.flush()
@@ -100,7 +102,7 @@ def check(password: str, prompt: str = "Password: ", tries: int = 3, color: bool
             return True
 
         if attempt < tries - 1:
-            print(f"{"\x1b[31m" if color else ""}Incorrect. Try Again{"\x1b[0m" if color else ""}")
+            print(f"{f'{_ANSI_START}31m' if color else ''}Incorrect. Try Again{f'{_ANSI_START}0m' if color else ''}")
 
     return False
 
