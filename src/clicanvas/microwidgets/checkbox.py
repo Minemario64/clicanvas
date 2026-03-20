@@ -62,9 +62,3 @@ def checkbox(prompt: str, choices: list[CheckboxChoice], cursor: str = ">", colo
         sys.stdout.flush()
 
     return [choice.choice for choice in choices if choice.selected]
-
-if __name__ == "__main__":
-    print(checkbox("Select Features:", [
-        CheckboxChoice("Math", True),
-        CheckboxChoice("Logging")
-    ], cursor="►", color=ANSIColor.BRIGHT_GREEN, highlightMode=HighlightMode.COLOR))

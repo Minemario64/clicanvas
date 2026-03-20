@@ -215,17 +215,3 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> s
         _HIST.append(res)
 
     return res
-
-if __name__ == "__main__":
-    loadHistory(".hist")
-    import time
-    name = input("Name: ", connectHistory=False)
-    print(f"Hello, {name}!")
-
-    time.sleep(1)
-    confirm = input("Confirm?(y/n): ", connectHistory=False)
-    print("Confirmed!" if confirm in ["y", "yes", "ye", "yea", "yeah"] else "Denied.")
-
-    while True:
-        input(": ", voidCtrlC=False)
-        saveHistory(".hist")

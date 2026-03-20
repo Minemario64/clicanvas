@@ -67,11 +67,3 @@ def checkbox(prompt: str, choices: list[object], cursor: str = ">", radioMode: R
         sys.stdout.flush()
 
     return choices[selected] if selected != -1 else None
-
-if __name__ == "__main__":
-    print(checkbox("Select Color:", [
-        "Blue",
-        "Green",
-        "Yellow",
-        "Red"
-    ], cursor="►", radioMode=RadioMode.ASCII, color=ANSIColor.BRIGHT_GREEN, highlightMode=HighlightMode.COLOR))

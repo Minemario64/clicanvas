@@ -2,10 +2,11 @@ from inputkit import Key, handleInput
 from typing import Callable, overload, Any
 from io import StringIO
 import sys
+import regex as rgx
 
 VERSION = "1.0.0"
 
-def input(prompt: str, voidCtrlC: bool = True) -> str:
+def input(prompt: str, rgxRestrictions: list[rgx.Pattern], voidCtrlC: bool = True) -> str:
     sys.stdout.write(prompt)
     sys.stdout.flush()
     inputBuf: StringIO = StringIO()
@@ -14,8 +15,14 @@ def input(prompt: str, voidCtrlC: bool = True) -> str:
     def inpHandler(key: Key | str) -> bool:
         nonlocal cur
         if isinstance(key, str):
-            inputBuf.write(key)
             cur += 1
+            inputBuf.write(key)
+            if not any([pattern.match(inputBuf.getvalue(), partial=True) for pattern in rgxRestrictions]):
+                cur -= 1
+                inputBuf.seek(cur)
+                inputBuf.truncate()
+                return True
+
             sys.stdout.write(key)
             sys.stdout.flush()
             return True
@@ -46,6 +53,9 @@ def input(prompt: str, voidCtrlC: bool = True) -> str:
                 sys.stdout.flush()
 
             case Key.ENTER:
+                if not any([pattern.match(inputBuf.getvalue(), partial=True) for pattern in rgxRestrictions]):
+                    return True
+
                 return False
 
             case Key.CTRL_C:
@@ -80,38 +90,3 @@ def input(prompt: str, voidCtrlC: bool = True) -> str:
     res = inputBuf.getvalue()
 
     return res
-
-@overload
-def customInput(prompt: str, validators: list[Callable[[str], bool]], failResponse: str = "Try Again.",*, inputFunc: Callable[[str], str] = input) -> str: ...
-
-@overload
-def customInput(prompt: str, validators: list[Callable[[str], bool]], failResponse: str = "Try Again.",*, transformers: list[Callable], inputFunc: Callable[[str], str] = input) -> Any: ...
-
-def customInput(prompt: str, validators: list[Callable[[str], bool]], failResponse: str = "Try Again.",*, inputFunc: Callable[[str], str] = input, transformers: list[Callable] | None = None) -> str | Any:
-    while True:
-        inp = inputFunc(prompt)
-        if all([validator(inp) for validator in validators]):
-            break
-
-        print(failResponse)
-
-    if transformers is None:
-        return inp
-
-    res: Any = inp
-    for transformer in transformers:
-        res = transformer(res)
-
-    return res
-
-if __name__ == "__main__":
-    print(repr(input("Hello: ")))
-    def isInt(input: str) -> bool:
-        try:
-            int(input)
-            return True
-
-        except Exception:
-            return False
-
-    print(customInput("Input an integer: ", [isInt], "Input an integer. Try Again.", transformers=[int]))

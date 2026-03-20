@@ -105,7 +105,7 @@ def customInput(prompt: str, validators: list[Callable[[str], bool]], failRespon
     return res
 
 if __name__ == "__main__":
-    input("Hello: ")
+    print(repr(input("Hello: ")))
     def isInt(input: str) -> bool:
         try:
             int(input)
@@ -114,4 +114,4 @@ if __name__ == "__main__":
         except Exception:
             return False
 
-    customInput("Input an integer: ", [isInt], "Input an integer. Try Again.", transformers=[int])
+    print(customInput("Input an integer: ", [isInt], "Input an integer. Try Again.", transformers=[int]))

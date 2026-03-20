@@ -41,7 +41,3 @@ def menu(prompt: str, choices: list[object], defaultIdx: int = 0, cursor: str = 
         return True
 
     return choices[pos]
-
-
-if __name__ == "__main__":
-    print(menu("Select Language:", ["Python", "Rust", "Ruby", "Lua"], cursor="►", color=(255, 213, 64), highlightMode=HighlightMode.COLOR))

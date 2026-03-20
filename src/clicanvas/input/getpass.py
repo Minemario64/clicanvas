@@ -103,6 +103,3 @@ def check(password: str, prompt: str = "Password: ", tries: int = 3, color: bool
             print(f"{"\x1b[31m" if color else ""}Incorrect. Try Again{"\x1b[0m" if color else ""}")
 
     return False
-
-if __name__ == "__main__":
-    password = check("123456")

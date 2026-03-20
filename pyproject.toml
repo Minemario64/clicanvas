@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "inputkit @ git+https://github.com/Minemario64/inputkit.git",
+    "regex>=2026.2.28",
 ]
 
 [project.optional-dependencies]
