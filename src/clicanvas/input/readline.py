@@ -6,6 +6,8 @@ import sys
 
 VERSION = "1.0.0"
 
+_ANSI_START = "\x1b["
+
 class maxList(list):
     @overload
     def __init__(self,*, maxLen: int = 50) -> None: ...
@@ -127,7 +129,7 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> s
                 inputBuf.truncate()
                 inputBuf.write(forwardInput)
                 inputBuf.seek(cur)
-                sys.stdout.write(f"\x1b[D{' '*(len(forwardInput)+1)}\x1b[{len(forwardInput)+1}D{f'{forwardInput}\x1b[{len(forwardInput)}D' if forwardInput else ''}")
+                sys.stdout.write(f"{_ANSI_START}D{' '*(len(forwardInput)+1)}{_ANSI_START}{len(forwardInput)+1}D{f'{forwardInput}{_ANSI_START}{len(forwardInput)}D' if forwardInput else ''}")
                 sys.stdout.flush()
 
             case Key.DEL:
@@ -137,7 +139,7 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> s
                 inputBuf.truncate()
                 inputBuf.write(forwardInput)
                 inputBuf.seek(cur)
-                sys.stdout.write(f"{' '*(len(forwardInput)+1)}\x1b[{len(forwardInput)+1}D{f'{forwardInput}\x1b[{len(forwardInput)}D' if forwardInput else ''}")
+                sys.stdout.write(f"{' '*(len(forwardInput)+1)}{_ANSI_START}{len(forwardInput)+1}D{f'{forwardInput}{_ANSI_START}{len(forwardInput)}D' if forwardInput else ''}")
                 sys.stdout.flush()
 
             case Key.ENTER:
@@ -182,7 +184,7 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> s
                         inputBuf.seek(0, 2)
                         bufLength = inputBuf.tell()
                         inputBuf.seek(cur)
-                        sys.stdout.write(f"{f'\x1b[{bufLength}D{""" """*bufLength}\x1b[{bufLength}D' if bufLength > 0 else ''}{newInputText}")
+                        sys.stdout.write(f"{f'{_ANSI_START}{bufLength}D{""" """*bufLength}{_ANSI_START}{bufLength}D' if bufLength > 0 else ''}{newInputText}")
                         sys.stdout.flush()
 
                         inputBuf.seek(0)
@@ -195,7 +197,7 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> s
                         inputBuf.seek(0, 2)
                         bufLength = inputBuf.tell()
                         inputBuf.seek(cur)
-                        sys.stdout.write(f"{f'\x1b[{bufLength}D{""" """*bufLength}\x1b[{bufLength}D' if bufLength > 0 else ''}{_HIST[historyIdx]}")
+                        sys.stdout.write(f"{f'{_ANSI_START}{bufLength}D{""" """*bufLength}{_ANSI_START}{bufLength}D' if bufLength > 0 else ''}{_HIST[historyIdx]}")
                         sys.stdout.flush()
 
                         inputBuf.seek(0)

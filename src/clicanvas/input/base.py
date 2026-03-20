@@ -5,6 +5,8 @@ import sys
 
 VERSION = "1.0.0"
 
+_ANSI_START = "\x1b["
+
 def input(prompt: str, voidCtrlC: bool = True) -> str:
     sys.stdout.write(prompt)
     sys.stdout.flush()
@@ -32,7 +34,7 @@ def input(prompt: str, voidCtrlC: bool = True) -> str:
                 inputBuf.truncate()
                 inputBuf.write(forwardInput)
                 inputBuf.seek(cur)
-                sys.stdout.write(f"\x1b[D{' '*(len(forwardInput)+1)}\x1b[{len(forwardInput)+1}D{f'{forwardInput}\x1b[{len(forwardInput)}D' if forwardInput else ''}")
+                sys.stdout.write(f"{_ANSI_START}D{' '*(len(forwardInput)+1)}{_ANSI_START}{len(forwardInput)+1}D{f'{forwardInput}{_ANSI_START}{len(forwardInput)}D' if forwardInput else ''}")
                 sys.stdout.flush()
 
             case Key.DEL:
@@ -42,7 +44,7 @@ def input(prompt: str, voidCtrlC: bool = True) -> str:
                 inputBuf.truncate()
                 inputBuf.write(forwardInput)
                 inputBuf.seek(cur)
-                sys.stdout.write(f"{' '*(len(forwardInput)+1)}\x1b[{len(forwardInput)+1}D{f'{forwardInput}\x1b[{len(forwardInput)}D' if forwardInput else ''}")
+                sys.stdout.write(f"{' '*(len(forwardInput)+1)}{_ANSI_START}{len(forwardInput)+1}D{f'{forwardInput}{_ANSI_START}{len(forwardInput)}D' if forwardInput else ''}")
                 sys.stdout.flush()
 
             case Key.ENTER:

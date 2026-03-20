@@ -1,10 +1,11 @@
 from inputkit import Key, handleInput
-from typing import Callable, overload, Any
 from io import StringIO
 import sys
 import regex as rgx
 
 VERSION = "1.0.0"
+
+_ANSI_START = "\x1b["
 
 def input(prompt: str, rgxRestrictions: list[rgx.Pattern], voidCtrlC: bool = True) -> str:
     sys.stdout.write(prompt)
@@ -39,7 +40,7 @@ def input(prompt: str, rgxRestrictions: list[rgx.Pattern], voidCtrlC: bool = Tru
                 inputBuf.truncate()
                 inputBuf.write(forwardInput)
                 inputBuf.seek(cur)
-                sys.stdout.write(f"\x1b[D{' '*(len(forwardInput)+1)}\x1b[{len(forwardInput)+1}D{f'{forwardInput}\x1b[{len(forwardInput)}D' if forwardInput else ''}")
+                sys.stdout.write(f"{_ANSI_START}D{' '*(len(forwardInput)+1)}{_ANSI_START}{len(forwardInput)+1}D{f'{forwardInput}{_ANSI_START}{len(forwardInput)}D' if forwardInput else ''}")
                 sys.stdout.flush()
 
             case Key.DEL:
@@ -49,7 +50,7 @@ def input(prompt: str, rgxRestrictions: list[rgx.Pattern], voidCtrlC: bool = Tru
                 inputBuf.truncate()
                 inputBuf.write(forwardInput)
                 inputBuf.seek(cur)
-                sys.stdout.write(f"{' '*(len(forwardInput)+1)}\x1b[{len(forwardInput)+1}D{f'{forwardInput}\x1b[{len(forwardInput)}D' if forwardInput else ''}")
+                sys.stdout.write(f"{' '*(len(forwardInput)+1)}{_ANSI_START}{len(forwardInput)+1}D{f'{forwardInput}{_ANSI_START}{len(forwardInput)}D' if forwardInput else ''}")
                 sys.stdout.flush()
 
             case Key.ENTER:
