@@ -7,7 +7,7 @@ name = "clicanvas"
 version = "0.1.6"
 description = "A python library that deals with terminal-based user input. From a TUI framework to custom input functions."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 dependencies = [
     "inputkit @ git+https://github.com/Minemario64/inputkit.git",
     "regex>=2026.2.28",
