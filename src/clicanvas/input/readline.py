@@ -184,7 +184,9 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> s
                         inputBuf.seek(0, 2)
                         bufLength = inputBuf.tell()
                         inputBuf.seek(cur)
-                        sys.stdout.write(f"{f'{_ANSI_START}{bufLength}D{""" """*bufLength}{_ANSI_START}{bufLength}D' if bufLength > 0 else ''}{newInputText}")
+
+                        # chr(32) is space, is there because of a syntax error for 3.10
+                        sys.stdout.write(f"{f'{_ANSI_START}{bufLength}D{chr(32)*bufLength}{_ANSI_START}{bufLength}D' if bufLength > 0 else ''}{newInputText}")
                         sys.stdout.flush()
 
                         inputBuf.seek(0)
@@ -197,7 +199,9 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> s
                         inputBuf.seek(0, 2)
                         bufLength = inputBuf.tell()
                         inputBuf.seek(cur)
-                        sys.stdout.write(f"{f'{_ANSI_START}{bufLength}D{""" """*bufLength}{_ANSI_START}{bufLength}D' if bufLength > 0 else ''}{_HIST[historyIdx]}")
+
+                        # chr(32) is space, is there because of a syntax error for 3.10
+                        sys.stdout.write(f"{f'{_ANSI_START}{bufLength}D{chr(32)*bufLength}{_ANSI_START}{bufLength}D' if bufLength > 0 else ''}{_HIST[historyIdx]}")
                         sys.stdout.flush()
 
                         inputBuf.seek(0)
@@ -217,3 +221,17 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> s
         _HIST.append(res)
 
     return res
+
+if __name__ == "__main__":
+    loadHistory(".hist")
+    import time
+    name = input("Name: ", connectHistory=False)
+    print(f"Hello, {name}!")
+
+    time.sleep(1)
+    confirm = input("Confirm?(y/n): ", connectHistory=False)
+    print("Confirmed!" if confirm in ["y", "yes", "ye", "yea", "yeah"] else "Denied.")
+
+    while True:
+        input(": ", voidCtrlC=False)
+        saveHistory(".hist")

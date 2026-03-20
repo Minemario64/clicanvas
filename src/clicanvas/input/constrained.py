@@ -91,3 +91,6 @@ def input(prompt: str, rgxRestrictions: list[rgx.Pattern], voidCtrlC: bool = Tru
     res = inputBuf.getvalue()
 
     return res
+
+if __name__ == "__main__":
+    print(repr(input("Hello: ", [rgx.compile(r"rock", rgx.I), rgx.compile(r"paper", rgx.I), rgx.compile(r"scissors", rgx.I)])))

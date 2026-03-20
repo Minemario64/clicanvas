@@ -105,3 +105,15 @@ def customInput(prompt: str, validators: list[Callable[[str], bool]], failRespon
         res = transformer(res)
 
     return res
+
+if __name__ == "__main__":
+    print(repr(input("Hello: ")))
+    def isInt(input: str) -> bool:
+        try:
+            int(input)
+            return True
+
+        except Exception:
+            return False
+
+    print(customInput("Input an integer: ", [isInt], "Input an integer. Try Again.", transformers=[int]))
