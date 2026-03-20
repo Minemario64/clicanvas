@@ -39,7 +39,7 @@ def input(prompt: str, rgxRestrictions: list[rgx.Pattern], voidCtrlC: bool = Tru
                 inputBuf.truncate()
                 inputBuf.write(forwardInput)
                 inputBuf.seek(cur)
-                sys.stdout.write(f"\x1b[D{" "*(len(forwardInput)+1)}\x1b[{len(forwardInput)+1}D{f"{forwardInput}\x1b[{len(forwardInput)}D" if forwardInput else ""}")
+                sys.stdout.write(f"\x1b[D{' '*(len(forwardInput)+1)}\x1b[{len(forwardInput)+1}D{f'{forwardInput}\x1b[{len(forwardInput)}D' if forwardInput else ''}")
                 sys.stdout.flush()
 
             case Key.DEL:
@@ -49,7 +49,7 @@ def input(prompt: str, rgxRestrictions: list[rgx.Pattern], voidCtrlC: bool = Tru
                 inputBuf.truncate()
                 inputBuf.write(forwardInput)
                 inputBuf.seek(cur)
-                sys.stdout.write(f"{" "*(len(forwardInput)+1)}\x1b[{len(forwardInput)+1}D{f"{forwardInput}\x1b[{len(forwardInput)}D" if forwardInput else ""}")
+                sys.stdout.write(f"{' '*(len(forwardInput)+1)}\x1b[{len(forwardInput)+1}D{f'{forwardInput}\x1b[{len(forwardInput)}D' if forwardInput else ''}")
                 sys.stdout.flush()
 
             case Key.ENTER:
