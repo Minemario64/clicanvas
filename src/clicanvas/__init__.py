@@ -17,7 +17,7 @@ if os.name == "nt" and isOptionFlagEnabled("thonny"):
     @lambda _: _()
     def ensureOutOfThonny():
         if sys.stdout.__class__.__name__ == "FakeOutputStream":
-            subprocess.Popen(["python", os.path.abspath(__file__)], creationflags=subprocess.CREATE_NEW_CONSOLE)
+            subprocess.Popen(["python", os.path.abspath(sys.argv[0])], creationflags=subprocess.CREATE_NEW_CONSOLE)
             print("Re-launching in external console...")
             exit()
 
