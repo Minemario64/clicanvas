@@ -1,5 +1,5 @@
 from inputkit import Key, handleInput
-from .__init__ import ANSIColor, HighlightMode
+from ._lib import ANSIColor, HighlightMode, _ANSI_START
 import sys
 
 VERSION = "1.0.0"
@@ -15,7 +15,7 @@ def menu(prompt: str, choices: list[object], defaultIdx: int = 0, cursor: str = 
         sys.stdout.write(f"{prompt}\r\n")
 
         for i, choice in enumerate(choices):
-            sys.stdout.write(f"{colorStr if not (highlightMode == highlightMode.COLOR) else ''}{f"{cursor}" if i == pos else " "} {("\x1b[7m" if highlightMode == HighlightMode.INVERT else colorStr if highlightMode == highlightMode.COLOR else "\x1b[1m" if highlightMode == highlightMode.BOLD else '') if i == pos else ""} {choice} {"\x1b[0m" if (colorStr) or (i == pos) else ""}\r\n")
+            sys.stdout.write(f"{colorStr if not (highlightMode == highlightMode.COLOR) else ''}{f"{cursor}" if i == pos else " "} {(f"{_ANSI_START}7m" if highlightMode == HighlightMode.INVERT else colorStr if highlightMode == highlightMode.COLOR else f"{_ANSI_START}1m" if highlightMode == highlightMode.BOLD else '') if i == pos else ""} {choice} {f"{_ANSI_START}0m" if (colorStr) or (i == pos) else ""}\r\n")
 
         sys.stdout.flush()
 
