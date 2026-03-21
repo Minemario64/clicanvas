@@ -27,9 +27,9 @@ def checkbox(prompt: str, choices: list[CheckboxChoice], cursor: str = ">", colo
         sys.stdout.write(f"{prompt}\r\n")
 
         for i, choice in enumerate(choices):
-            sys.stdout.write(f"{colorStr if not (highlightMode == highlightMode.COLOR) else ''}{cursor if i == pos else " "*len(cursor)} {(f'{_ANSI_START}7m' if highlightMode == HighlightMode.INVERT else colorStr if highlightMode == highlightMode.COLOR else f"{_ANSI_START}1m" if highlightMode == highlightMode.BOLD else '') if i == pos else ""} [{"X" if choice.selected else " "}] {choice.choice} {f'{_ANSI_START}0m' if (colorStr) or (i == pos) else ""}\r\n")
+            sys.stdout.write(f"{colorStr if not (highlightMode == highlightMode.COLOR) else ''}{cursor if i == pos else " "*len(cursor)} {(f'{_ANSI_START}7m' if highlightMode == HighlightMode.INVERT else colorStr if highlightMode == highlightMode.COLOR else f'{_ANSI_START}1m' if highlightMode == highlightMode.BOLD else '') if i == pos else ""} [{"X" if choice.selected else " "}] {choice.choice} {f'{_ANSI_START}0m' if (colorStr) or (i == pos) else ""}\r\n")
 
-        sys.stdout.write(f"\r\n{colorStr if not (highlightMode == highlightMode.COLOR) else ''}{cursor if pos == len(choices) else " "*len(cursor)} {(f'{_ANSI_START}7m' if highlightMode == HighlightMode.INVERT else colorStr if highlightMode == highlightMode.COLOR else f"{_ANSI_START}1m" if highlightMode == highlightMode.BOLD else '') if pos == len(choices) else ""} Confirm {f'{_ANSI_START}0m' if (colorStr) or (pos == len(choices)) else ""}\r\n")
+        sys.stdout.write(f"\r\n{colorStr if not (highlightMode == highlightMode.COLOR) else ''}{cursor if pos == len(choices) else " "*len(cursor)} {(f'{_ANSI_START}7m' if highlightMode == HighlightMode.INVERT else colorStr if highlightMode == highlightMode.COLOR else f'{_ANSI_START}1m' if highlightMode == highlightMode.BOLD else '') if pos == len(choices) else ""} Confirm {f'{_ANSI_START}0m' if (colorStr) or (pos == len(choices)) else ""}\r\n")
 
         sys.stdout.flush()
 
