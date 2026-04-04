@@ -54,6 +54,7 @@ class maxList(list):
         self.reverse()
 
 _HIST = maxList([])
+_HIST_PATH: Path | None = None
 
 @overload
 def maxHistory() -> int: ...
@@ -68,12 +69,16 @@ def maxHistory(value: int | None = None) -> int | None:
     else:
         _HIST.changeMaxLen(value)
 
-def loadHistory(file: str | Path | TextIO) -> None:
+def loadHistory(file: str | Path | TextIO, autoSave: bool = True) -> None:
+    global _HIST_PATH
     if isinstance(file, Path):
         if not file.is_file():
             raise ValueError("Path object must be a file.")
 
     if isinstance(file, str | Path):
+        if autoSave:
+            _HIST_PATH = Path().joinpath(file) if isinstance(file, str) else file
+
         with (open(file, "r", encoding='utf8') if isinstance(file, str) else file.open("r", encoding='utf8')) as fileObj:
             _HIST.clear()
             _HIST.extend(fileObj.read().splitlines())
@@ -98,7 +103,7 @@ def saveHistory(filepath: str | Path) -> None:
     with pathObj.open("w") as file:
         file.write("\n".join(_HIST))
 
-def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> str:
+def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True, autoSaveHistory: bool = True) -> str:
     sys.stdout.write(prompt)
     sys.stdout.flush()
     newInputText: str = ''
@@ -219,6 +224,10 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> s
     res = inputBuf.getvalue()
     if connectHistory:
         _HIST.append(res)
+        if autoSaveHistory and _HIST_PATH is not None:
+            with _HIST_PATH.open("+") as file:
+                file.seek(0, 2)
+                file.write(f"\n{res}" if file.tell() > 0 else res)
 
     return res
 

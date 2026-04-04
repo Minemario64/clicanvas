@@ -15,7 +15,7 @@ def menu(prompt: str, choices: list[object], defaultIdx: int = 0, cursor: str = 
         sys.stdout.write(f"{prompt}\r\n")
 
         for i, choice in enumerate(choices):
-            sys.stdout.write(f"{colorStr if not (highlightMode == highlightMode.COLOR) else ''}{f"{cursor}" if i == pos else " "} {(f"{_ANSI_START}7m" if highlightMode == HighlightMode.INVERT else colorStr if highlightMode == highlightMode.COLOR else f"{_ANSI_START}1m" if highlightMode == highlightMode.BOLD else '') if i == pos else ""} {choice} {f"{_ANSI_START}0m" if (colorStr) or (i == pos) else ""}\r\n")
+            sys.stdout.write(f"{colorStr if not (highlightMode == highlightMode.COLOR) else str()}{f'{cursor}' if i == pos else chr(32)} {(f'{_ANSI_START}7m' if highlightMode == HighlightMode.INVERT else colorStr if highlightMode == highlightMode.COLOR else f'{_ANSI_START}1m' if highlightMode == highlightMode.BOLD else str()) if i == pos else str()} {choice} {f'{_ANSI_START}0m' if (colorStr) or (i == pos) else str()}\r\n")
 
         sys.stdout.flush()
 
