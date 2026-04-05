@@ -54,12 +54,13 @@ class maxList(list):
         self.reverse()
 
 _HIST = maxList([])
+_HIST_PATH: Path | None = None
 
 @overload
-def maxHistory() -> int: ...
+def maxHistory() -> int: """Returns the current max amount of history before history starts getting deleted"""
 
 @overload
-def maxHistory(value: int) -> None: ...
+def maxHistory(value: int) -> None: """Sets the max amount of history"""
 
 def maxHistory(value: int | None = None) -> int | None:
     if value is None:
@@ -68,12 +69,25 @@ def maxHistory(value: int | None = None) -> int | None:
     else:
         _HIST.changeMaxLen(value)
 
-def loadHistory(file: str | Path | TextIO) -> None:
+def loadHistory(file: str | Path | TextIO, autoSave: bool = True) -> None:
+    """Loads a history file
+
+    Args:
+        file (str | Path | TextIO): The filepath or file object to read from
+        autoSave (bool, optional): If file is a path (str | Path), it will allow you to automatically save to history from using readline. Defaults to True.
+
+    Raises:
+        ValueError: If the file is a pathlib.Path() object and is a directory
+    """
+    global _HIST_PATH
     if isinstance(file, Path):
         if not file.is_file():
             raise ValueError("Path object must be a file.")
 
     if isinstance(file, str | Path):
+        if autoSave:
+            _HIST_PATH = Path().joinpath(file) if isinstance(file, str) else file
+
         with (open(file, "r", encoding='utf8') if isinstance(file, str) else file.open("r", encoding='utf8')) as fileObj:
             _HIST.clear()
             _HIST.extend(fileObj.read().splitlines())
@@ -88,6 +102,14 @@ def loadHistory(file: str | Path | TextIO) -> None:
         file.seek(cursor)
 
 def saveHistory(filepath: str | Path) -> None:
+    """Save the current history to a file
+
+    Args:
+        filepath (str | Path): The filepath it will save to. Will create it if it doesn't exist.
+
+    Raises:
+        ValueError: If the filepath is a pathlib.Path() object and is a directory
+    """
     if isinstance(filepath, Path):
         if filepath.is_dir():
             raise ValueError("Path must be able to be a file.")
@@ -98,7 +120,21 @@ def saveHistory(filepath: str | Path) -> None:
     with pathObj.open("w") as file:
         file.write("\n".join(_HIST))
 
-def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> str:
+def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True, autoSaveHistory: bool = True) -> str:
+    """Mirrors readline.readline() function
+
+    Args:
+        prompt (str): The prompt to input the user with
+        voidCtrlC (bool, optional): If True, it will void Ctrl+C and won't raise a KeyboardInterrupt exception. Defaults to True.
+        connectHistory (bool, optional): If false, the input will not be able to access history and won't save it to history. Defaults to True.
+        autoSaveHistory (bool, optional): If used loadHistory() and loaded a filepath, and this is True, it will automatically save the user input to the file so you don't have to call saveHistory(). Defaults to True.
+
+    Raises:
+        KeyboardInterrupt: If the user presses Ctrl+C and voidCtrlC is False
+
+    Returns:
+        str: The user input
+    """
     sys.stdout.write(prompt)
     sys.stdout.flush()
     newInputText: str = ''
@@ -219,6 +255,10 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True) -> s
     res = inputBuf.getvalue()
     if connectHistory:
         _HIST.append(res)
+        if autoSaveHistory and _HIST_PATH is not None:
+            with _HIST_PATH.open("+") as file:
+                file.seek(0, 2)
+                file.write(f"\n{res}" if file.tell() > 0 else res)
 
     return res
 

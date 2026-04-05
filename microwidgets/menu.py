@@ -5,6 +5,19 @@ import sys
 VERSION = "1.0.0"
 
 def menu(prompt: str, choices: list[object], defaultIdx: int = 0, cursor: str = ">", color: ANSIColor | tuple[int, int, int] | None = None, highlightMode: HighlightMode = HighlightMode.INVERT) -> object:
+    """Prompts the user and gives them choices to pick from
+
+    Args:
+        prompt (str): The prompt
+        choices (list[object]): The list of choices the user can pick from
+        defaultIdx (int, optional): The index of the choices list where the cursor will start. Defaults to 0.
+        cursor (str, optional): The character that represents what object the user is selecting visually. Defaults to ">".
+        color (ANSIColor | tuple[int, int, int] | None, optional): The color either applied everywhere or just on the selected object, where None is no color. Defaults to None.
+        highlightMode (HighlightMode, optional): The mode to highlight the current selected object. Defaults to HighlightMode.INVERT.
+
+    Returns:
+        object: The selected object
+    """
     if not choices:
         return None
 

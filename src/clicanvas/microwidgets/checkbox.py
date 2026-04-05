@@ -16,6 +16,19 @@ class CheckboxChoice:
 VERSION = "1.0.0"
 
 def checkbox(prompt: str, choices: list[CheckboxChoice], cursor: str = ">", color: ANSIColor | tuple[int, int, int] | None = None, highlightMode: HighlightMode = HighlightMode.INVERT, keepOnScreen: bool = False) -> list[object]:
+    """Prompts the user with a list of choices that can be turned on and off
+
+    Args:
+        prompt (str): The prompt
+        choices (list[CheckboxChoice]): The list of choices and their default states
+        cursor (str, optional): The character(s) that represent the cursor to let the user know where they are in the list. Defaults to ">".
+        color (ANSIColor | tuple[int, int, int] | None, optional): The color that can either be for everything or the selected object. Defaults to None.
+        highlightMode (HighlightMode, optional): The mode to highlight the selected option. Defaults to HighlightMode.INVERT.
+        keepOnScreen (bool, optional): When done, will keep the choices and prompt on screen instead of deleting them. Defaults to False.
+
+    Returns:
+        list[object]: The list of objects put in the choices that were selected by the user
+    """
     if not choices:
         return []
 

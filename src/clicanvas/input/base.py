@@ -8,6 +8,18 @@ VERSION = "1.0.0"
 _ANSI_START = "\x1b["
 
 def input(prompt: str, voidCtrlC: bool = True) -> str:
+    """A custom input as a mirror for the builtin input()
+
+    Args:
+        prompt (str): The input prompt before getting input
+        voidCtrlC (bool, optional): If Ctrl+C would be voided and not raise a KeyboardInterrupt. Defaults to True.
+
+    Raises:
+        KeyboardInterrupt: If the user presses Ctrl+C and voidCtrlC is False
+
+    Returns:
+        str: The user input
+    """
     sys.stdout.write(prompt)
     sys.stdout.flush()
     inputBuf: StringIO = StringIO()
@@ -84,10 +96,33 @@ def input(prompt: str, voidCtrlC: bool = True) -> str:
     return res
 
 @overload
-def customInput(prompt: str, validators: list[Callable[[str], bool]], failResponse: str = "Try Again.",*, inputFunc: Callable[[str], str] = input) -> str: ...
+def customInput(prompt: str, validators: list[Callable[[str], bool]], failResponse: str = "Try Again.",*, inputFunc: Callable[[str], str] = input) -> str:
+    """Creates and uses an extension of the input function
+
+    Args:
+        prompt (str): The prompt of the user input function, and will be the 1st argument when calling the function.
+        validators (list[Callable[[str], bool]]): The functions that will validate the user input. If an earlier validator returns False, it will exit early.
+        failResponse (str, optional): The response to print when the user input is invalid. Defaults to "Try Again.".
+        inputFunc (Callable[[str], str], optional): The function that will return user input. Defaults to the base input function in this module.
+
+    Returns:
+        str: The valid user input
+    """
 
 @overload
-def customInput(prompt: str, validators: list[Callable[[str], bool]], failResponse: str = "Try Again.",*, transformers: list[Callable], inputFunc: Callable[[str], str] = input) -> Any: ...
+def customInput(prompt: str, validators: list[Callable[[str], bool]], failResponse: str = "Try Again.",*, transformers: list[Callable], inputFunc: Callable[[str], str] = input) -> Any:
+    """Creates and uses an extension of the input function
+
+    Args:
+        prompt (str): The prompt of the user input function, and will be the 1st argument when calling the function.
+        validators (list[Callable[[str], bool]]): The functions that will validate the user input. If an earlier validator returns False, it will exit early.
+        transformers (list[Callable]): The functions that will transform the valid user input to a form that you want.
+        failResponse (str, optional): The response to print when the user input is invalid. Defaults to "Try Again.".
+        inputFunc (Callable[[str], str], optional): The function that will return user input. Defaults to the base input function in this module.
+
+    Returns:
+        Any: The final value after being transformed by the transformers.
+    """
 
 def customInput(prompt: str, validators: list[Callable[[str], bool]], failResponse: str = "Try Again.",*, inputFunc: Callable[[str], str] = input, transformers: list[Callable] | None = None) -> str | Any:
     while True:

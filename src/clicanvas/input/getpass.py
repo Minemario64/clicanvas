@@ -8,6 +8,18 @@ VERSION = "1.0.0"
 _ANSI_START = "\x1b["
 
 def input(prompt: str = "Password: ", voidCtrlC: bool = True) -> str:
+    """A mirror to getpass.getpass() which doesn't display the user input
+
+    Args:
+        prompt (str, optional): The user prompt. Defaults to "Password: ".
+        voidCtrlC (bool, optional): If Ctrl+C would be voided and not raise a KeyboardInterrupt. Defaults to True.
+
+    Raises:
+        KeyboardInterrupt: If the user presses Ctrl+C and voidCtrlC is False
+
+    Returns:
+        str: The user input
+    """
     sys.stdout.write(prompt)
     sys.stdout.flush()
     inputBuf: StringIO = StringIO()
@@ -74,13 +86,13 @@ def input(prompt: str = "Password: ", voidCtrlC: bool = True) -> str:
     return res
 
 @overload
-def confirm() -> str: ...
+def confirm() -> str: """An alias to confirm a password with retries"""
 
 @overload
-def confirm(prompt: str = "Password: ", confirmPrompt: str = "Confirm password: ") -> str: ...
+def confirm(prompt: str = "Password: ", confirmPrompt: str = "Confirm password: ") -> str: """An alias to confirm a password with retries"""
 
 @overload
-def confirm(prompt: str = "Password: ", confirmPrompt: str = "Confirm password: ", retry: bool = False) -> str | None: ...
+def confirm(prompt: str = "Password: ", confirmPrompt: str = "Confirm password: ", retry: bool = False) -> str | None: """An alias to confirm a password but without retries"""
 
 def confirm(prompt: str = "Password: ", confirmPrompt: str = "Confirm password: ", retry: bool = True) -> str | None:
     while True:
@@ -96,6 +108,17 @@ def confirm(prompt: str = "Password: ", confirmPrompt: str = "Confirm password: 
     return password
 
 def check(password: str, prompt: str = "Password: ", tries: int = 3, color: bool = True) -> bool:
+    """An alias to check if a password matches the user input
+
+    Args:
+        password (str): The correct password
+        prompt (str, optional): The prompt for the user. Defaults to "Password: ".
+        tries (int, optional): The amount of tries the user gets before failing. Defaults to 3.
+        color (bool, optional): If the response to if the user input is incorrect should have color. Defaults to True.
+
+    Returns:
+        bool: If the check passed, and they got the password correct
+    """
     for attempt in range(tries):
         attemptedInput = input(prompt)
         if attemptedInput == password:

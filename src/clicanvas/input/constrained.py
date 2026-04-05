@@ -8,6 +8,19 @@ VERSION = "1.0.0"
 _ANSI_START = "\x1b["
 
 def input(prompt: str, rgxRestrictions: list[rgx.Pattern], voidCtrlC: bool = True) -> str:
+    """Prompts the user with input, but you can constrain it to fit regexes
+
+    Args:
+        prompt (str): The prompt
+        rgxRestrictions (list[regex.Pattern]): The compiled regex patterns that the user input will be constrained to
+        voidCtrlC (bool, optional): If Ctrl+C would be voided and not raise a KeyboardInterrupt. Defaults to True.
+
+    Raises:
+        KeyboardInterrupt: If the user presses Ctrl+C and voidCtrlC is False
+
+    Returns:
+        str: The constrained user input
+    """
     sys.stdout.write(prompt)
     sys.stdout.flush()
     inputBuf: StringIO = StringIO()
