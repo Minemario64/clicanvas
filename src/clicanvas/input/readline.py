@@ -256,7 +256,7 @@ def input(prompt: str, voidCtrlC: bool = True, connectHistory: bool = True, auto
     if connectHistory:
         _HIST.append(res)
         if autoSaveHistory and _HIST_PATH is not None:
-            with _HIST_PATH.open("+") as file:
+            with _HIST_PATH.open("r+") as file:
                 file.seek(0, 2)
                 file.write(f"\n{res}" if file.tell() > 0 else res)
 
