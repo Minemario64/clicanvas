@@ -15,6 +15,10 @@ dependencies = [
 
 [project.optional-dependencies]
 thonny = []
+images = [
+    "numpy>=2.2.6",
+    "pillow>=12.2.0",
+]
 
 [tool.uv.sources]
 tester = { git = "https://github.com/Minemario64/Testing-Suite.git" }
